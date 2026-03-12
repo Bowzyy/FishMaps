@@ -1,0 +1,8 @@
+body {
+    background-color: aquamarine;
+}
+.content {
+    align-items: center;
+    text-align: center;
+    display: block;
+}
