@@ -28,15 +28,26 @@ async function getLocation() {
     );
 }
 
+// Use latitude and longitude as parameters, gathered from users location
 async function checkWater(lat, lon) {
     const RESULT = document.getElementById("result");
     RESULT.innerText = "Checking nearby water features...";
 
     // QUERY
-    // Filter for different water data, NODE - a single point, WAY - a line or polygon, RELATION - a group of nodes
+    // Filter for different water data:
+    // NODE - a single point on a map (coordinates)
+    // WAY - an ordered list of nodes to make a line or polygon
+    // RELATION - a group of nodes to describe complex features
+
     // [out:json] - return results in json format
     // around: 800 -> within 800m
-    const QUERY = `[out:json];(way(around:800,${lat},${lon})["natural"="water"];way(around:800,${lat},${lon})["waterway"];way(around:800,${lat},${lon})["natural"="coastline"];relation(around:800,${lat},${lon})["natural"="water"];relation(around:800,${lat},${lon})["waterway"];relation(around:800,${lat},${lon})["natural"="coastline"];);out;`;
+    // final out; return matching elements
+
+    const QUERY = `[out:json];(
+        way(around:500,${lat},${lon})["waterway"~"river|stream|canal"];
+        way(around:500,${lat},${lon})["natural"="water"];
+        way(around:500,${lat},${lon})["natural"="coastline"];
+    );out;`;
 
     try {
         // Fetch - sends a http request to the overpass api interpreter endpoint**
@@ -61,7 +72,7 @@ async function checkWater(lat, lon) {
 
         let RIVERS = 0,
             LAKES = 0,
-            COASTLINES = 0;
+            SEAS = 0;
 
         // WATER_TYPE.tags - contains OSM data describing the features
         // natural - lakes and ponds
@@ -72,16 +83,16 @@ async function checkWater(lat, lon) {
             // Mega useful because API overpass elements arent guarnteed to have tags
             if (WATER_TYPE.tags?.waterway) RIVERS++;
             if (WATER_TYPE.tags?.natural === "water") LAKES++;
-            if (WATER_TYPE.tags?.natural === "coastline") COASTLINES++;
+            if (WATER_TYPE.tags?.natural === "coastline") SEAS++;
         });
 
         // Update UI based on the information
 
         RESULT.innerHTML = `
       Nearby water detected:<br>
-      Rivers/streams: ${RIVERS}<br>
-      Lakes/reservoirs: ${LAKES}<br>
-      Coastline: ${COASTLINES}
+      Rivers: ${RIVERS}<br>
+      Lakes/Pond: ${LAKES}<br>
+      Sea: ${SEAS}
     `;
 
         // If the API or network fails show this error.
