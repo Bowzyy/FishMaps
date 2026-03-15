@@ -1,8 +1,42 @@
+/* ------------------------------ Fonts ------------------------------*/
+
+@font-face {
+    font-family: "Showpop";
+    src: url("assets/fonts/Showpop.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    overflow-x: hidden;
+}
+
 body {
-    background-color: aquamarine;
+    background-color: rgb(40, 162, 255);
 }
 .content {
     align-items: center;
     text-align: center;
     display: block;
+}
+
+.header {
+    background-color: rgb(8, 117, 201);
+    margin: -1vw;
+    margin-bottom: 1vw;
+    padding: 1vw;
+    border: none;
+    font-family: "Showpop", sans-serif;
+
+    text-align: left;
+}
+
+.title {
+    padding-left: 1vw;
+    font-size: 2.5vw;
+}
+
+canvas {
+    border: 3px solid rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
 }

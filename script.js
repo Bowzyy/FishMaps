@@ -44,9 +44,9 @@ async function checkWater(lat, lon) {
     // final out; return matching elements
 
     const QUERY = `[out:json];(
-        way(around:500,${lat},${lon})["waterway"~"river|stream|canal"];
-        way(around:500,${lat},${lon})["natural"="water"];
-        way(around:500,${lat},${lon})["natural"="coastline"];
+        way(around:800,${lat},${lon})["waterway"];
+        way(around:800,${lat},${lon})["natural"="water"];
+        way(around:800,${lat},${lon})["natural"="coastline"];
     );out;`;
 
     try {
